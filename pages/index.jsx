@@ -1,6 +1,14 @@
-import { useProgram, useClaimNFT, useNFTs } from "@thirdweb-dev/react/solana";
+import { useWallet } from "@solana/wallet-adapter-react";
+import {
+  useProgram,
+  useClaimNFT,
+  useNFTs,
+  useClaimConditions,
+} from "@thirdweb-dev/react/solana";
 import dynamic from "next/dynamic";
+import Head from "next/head";
 import Image from "next/image";
+import { useState } from "react";
 import styles from "../styles/Home.module.css";
 import MyApp from "./_app";
 
@@ -17,58 +25,143 @@ const Home = () => {
   // const sdk = useSDK();
   // Here's how to get a nft collection
   const { program } = useProgram(
-    'HwAZ42RzL8rXqhW9fCDWDftP69wUTC2eFsa2yC8B54RX',
+    "CX9BWjttmmPBENxz6rwRqaT24khhsVFZanAmGqnfYE5C",
     "nft-drop"
   );
 
+  const wallet = useWallet();
+
   const { data: nftsList, isLoading: IsNftsLoading } = useNFTs(program);
 
-  const { mutateAsync: claim, isLoading, isSuccess, error } = useClaimNFT(program);
+  const {
+    mutateAsync: claim,
+    isLoading,
+    isSuccess,
+    error,
+  } = useClaimNFT(program);
 
-  console.log(nftsList, IsNftsLoading);
+  const { data: claimData, isLoading: isClaimDataLoading } =
+    useClaimConditions(program);
 
+  const [amount, setAmount] = useState(1);
+
+  const handleAmountChange = (e) => {
+    setAmount(e.target.value);
+  };
 
   return (
     <>
+      <Head>
+        <title>Sapiens - We are coming to Metaverse 🤯</title>
+        <link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="Sapiens - We are coming to Metaverse"
+        />
+        <meta
+          name="google-site-verification"
+          content="ffaI56OmzwjwP2WSMXbAD0BnysyVN8j8VoJO-a9Pgqc"
+        />
+        <meta
+          name="twitter:description"
+          content="A collection of utility enabled NFTs built on SOLANA."
+        />
+        <meta
+          name="description"
+          content="A collection of utility enabled NFTs built on SOLANA."
+        />
+        <meta
+          property="og:title"
+          content="Sapiens - We are coming to Metaverse"
+        />
+        <meta
+          property="og:description"
+          content="A collection of utility enabled NFTs built on SOLANA."
+        />
+        <meta
+          property="og:image"
+          content={`https://www.sapiensnft.io/home/banner.gif`}
+        />
+        <meta
+          name="twitter:image:src"
+          content={`https://www.sapiensnft.io/home/banner.gif`}
+        />
+        <meta
+          name="twitter:image"
+          content={`https://www.sapiensnft.io/home/banner.gif`}
+        />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="true"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700;900&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
       <div className={styles.container}>
-        <div className={styles.iconContainer}>
+        <div className={styles.content}>
+          <div className={styles.iconContainer}>
+            <Image
+              src="/banner.gif"
+              height={300}
+              width={300}
+              style={{
+                objectFit: "contain",
+              }}
+              alt="sapiens"
+            />
+          </div>
           <Image
-            src="/thirdweb.svg"
-            height={75}
-            width={115}
+            src="/logo-white.svg"
+            height={40}
+            width={140}
             style={{
               objectFit: "contain",
             }}
-            alt="thirdweb"
+            alt="sapiens"
           />
-          <Image
-            width={75}
-            height={75}
-            src="/sol.png"
-            className={styles.icon}
-            alt="sol"
-          />
+          <div>
+            {claimData && claimData.isReadyToClaim && (
+              <p className={styles.live}>Minting LIVE</p>
+            )}
+          </div>
+          <div>
+            {claimData && claimData.isReadyToClaim && (
+              <p
+                className={styles.claimData}
+              >{`${claimData?.claimedSupply} / ${claimData?.maxClaimable}`}</p>
+            )}
+          </div>
+          <p className={styles.explain}>
+            A collection of 10,000 utility enabled NFTs that are unique in terms
+            of design, traits and concept. Each NFT provides additional benefits
+            & perks as long as you Hold them.
+          </p>
+          <WalletMultiButtonDynamic />
+          {wallet.connected && (
+            <div className={styles.claimWrapper}>
+              <input
+                type="number"
+                placeholder="Enter amount"
+                name="amount"
+                value={amount}
+                onChange={handleAmountChange}
+                min={1}
+              />
+              <button
+                className={styles.mintButton}
+                onClick={() => claim({ amount })}
+              >
+                {isLoading ? (isSuccess ? "Claimed" : "Claiming") : "Claim"}
+              </button>
+            </div>
+          )}
         </div>
-        <h1 className={styles.h1}>Solana, meet thirdweb 👋</h1>
-        <p className={styles.explain}>
-          Explore what you can do with thirdweb&rsquo;s brand new{" "}
-          <b>
-            <a
-              href="https://portal.thirdweb.com/solana"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.lightPurple}
-            >
-              Solana SDK
-            </a>
-          </b>
-          .
-        </p>
-        <button onClick={() => claim({amount: 1})}>
-      {isLoading ? isSuccess ? 'Claimed' : 'Claiming' : "Claim"}
-    </button>
-
-        <WalletMultiButtonDynamic />
       </div>
     </>
   );
