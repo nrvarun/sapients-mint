@@ -142,7 +142,9 @@ const Home = () => {
             of design, traits and concept. Each NFT provides additional benefits
             & perks as long as you Hold them.
           </p>
-          <WalletMultiButtonDynamic />
+          <div className={styles.walletConnect}>
+            <WalletMultiButtonDynamic />
+          </div>
           {wallet.connected && (
             <div className={styles.claimWrapper}>
               <input

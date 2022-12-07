@@ -8,6 +8,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
+  text-align: center;
 }
 
 .content {
@@ -34,6 +35,11 @@
 
 .actionsWrapper li {
   margin: 0 40px 0 0;
+}
+
+.walletConnect {
+  display: flex;
+  justify-content: center;
 }
 
 .claimWrapper {
@@ -85,7 +91,7 @@
 
 .explain {
   font-size: 1.125rem;
-  max-width: 450px;
+  max-width: 600px;
 }
 
 .lightPurple {
