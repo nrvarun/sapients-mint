@@ -25,7 +25,7 @@ const Home = () => {
   // const sdk = useSDK();
   // Here's how to get a nft collection
   const { program } = useProgram(
-    "Hg7P63W7PAoNAnruPMVtG3D6tFFHxDinF7GJiz6enSG4",
+    "CX9BWjttmmPBENxz6rwRqaT24khhsVFZanAmGqnfYE5C",
     "nft-drop"
   );
 
