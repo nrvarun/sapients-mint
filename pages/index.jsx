@@ -111,6 +111,7 @@ const Home = () => {
               height={300}
               width={300}
               style={{
+                borderRadius: 8,
                 objectFit: "contain",
               }}
               alt="sapiens"
@@ -125,18 +126,27 @@ const Home = () => {
             }}
             alt="sapiens"
           />
-          <div>
-            {claimData && claimData.isReadyToClaim && (
-              <p className={styles.live}>Minting LIVE</p>
+          <div className={styles.claimDataWrapper}>
+            {isClaimDataLoading ? (
+              <p>Loading...</p>
+            ) : (
+              <>
+                <div>
+                  {claimData && claimData.isReadyToClaim && (
+                    <p className={styles.live}>Minting LIVE</p>
+                  )}
+                </div>
+                <div>
+                  {claimData && claimData.isReadyToClaim && (
+                    <p
+                      className={styles.claimData}
+                    >{`${claimData?.claimedSupply} / ${claimData?.maxClaimable}`}</p>
+                  )}
+                </div>
+              </>
             )}
           </div>
-          <div>
-            {claimData && claimData.isReadyToClaim && (
-              <p
-                className={styles.claimData}
-              >{`${claimData?.claimedSupply} / ${claimData?.maxClaimable}`}</p>
-            )}
-          </div>
+
           <p className={styles.explain}>
             A collection of 10,000 utility enabled NFTs that are unique in terms
             of design, traits and concept. Each NFT provides additional benefits
