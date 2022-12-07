@@ -17,6 +17,16 @@
   text-align: center;
 }
 
+.solPriceWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.solPriceWrapper span {
+  margin: 0 8px;
+}
+
 .live {
   color: #fff;
   border: 1px solid #512da8;

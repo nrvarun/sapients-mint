@@ -132,12 +132,15 @@ const Home = () => {
             ) : (
               <>
                 <div>
-                  {claimData && claimData.isReadyToClaim && (
-                    <p className={styles.live}>Minting LIVE</p>
-                  )}
+                  {claimData && <p className={styles.live}>Minting LIVE</p>}
+                  <p className={styles.solPriceWrapper}>
+                    Price:
+                    <span>5.84</span>
+                    <Image src={"/sol.png"} width={16} height={16} alt="sol" />
+                  </p>
                 </div>
                 <div>
-                  {claimData && claimData.isReadyToClaim && (
+                  {claimData && (
                     <p
                       className={styles.claimData}
                     >{`${claimData?.claimedSupply} / ${claimData?.maxClaimable}`}</p>
