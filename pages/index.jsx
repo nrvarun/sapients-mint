@@ -1,16 +1,16 @@
 import { useWallet } from "@solana/wallet-adapter-react";
+
 import {
   useProgram,
   useClaimNFT,
-  useNFTs,
   useClaimConditions,
 } from "@thirdweb-dev/react/solana";
+
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
 import styles from "../styles/Home.module.css";
-import MyApp from "./_app";
 
 // Default styles that can be overridden by your app
 require("@solana/wallet-adapter-react-ui/styles.css");
@@ -25,19 +25,19 @@ const Home = () => {
   // const sdk = useSDK();
   // Here's how to get a nft collection
   const { program } = useProgram(
-    "CX9BWjttmmPBENxz6rwRqaT24khhsVFZanAmGqnfYE5C",
+    "Hg7P63W7PAoNAnruPMVtG3D6tFFHxDinF7GJiz6enSG4",
     "nft-drop"
   );
 
   const wallet = useWallet();
 
-  const { data: nftsList, isLoading: IsNftsLoading } = useNFTs(program);
+  // const { data: nftsList, isLoading: IsNftsLoading } = useNFTs(program);
 
   const {
     mutateAsync: claim,
     isLoading,
     isSuccess,
-    error,
+    isError,
   } = useClaimNFT(program);
 
   const { data: claimData, isLoading: isClaimDataLoading } =
@@ -156,22 +156,25 @@ const Home = () => {
             <WalletMultiButtonDynamic />
           </div>
           {wallet.connected && (
-            <div className={styles.claimWrapper}>
-              <input
-                type="number"
-                placeholder="Enter amount"
-                name="amount"
-                value={amount}
-                onChange={handleAmountChange}
-                min={1}
-              />
-              <button
-                className={styles.mintButton}
-                onClick={() => claim({ amount })}
-              >
-                {isLoading ? (isSuccess ? "Claimed" : "Claiming") : "Claim"}
-              </button>
-            </div>
+            <>
+              <div className={styles.claimWrapper}>
+                <input
+                  type="number"
+                  placeholder="Enter amount"
+                  name="amount"
+                  value={amount}
+                  onChange={handleAmountChange}
+                  min={1}
+                />
+                <button
+                  className={styles.mintButton}
+                  onClick={() => claim({ amount })}
+                >
+                  {isLoading ? (isSuccess ? "Claimed" : "Claiming") : "Claim"}
+                </button>
+              </div>
+              <div>{isError && <p>Error happened during claiming.</p>}</div>
+            </>
           )}
         </div>
       </div>
