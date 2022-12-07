@@ -4,6 +4,7 @@ import {
   useProgram,
   useClaimNFT,
   useClaimConditions,
+  useBalance,
 } from "@thirdweb-dev/react/solana";
 
 import dynamic from "next/dynamic";
@@ -14,6 +15,8 @@ import styles from "../styles/Home.module.css";
 
 // Default styles that can be overridden by your app
 require("@solana/wallet-adapter-react-ui/styles.css");
+
+const SOL_PRICE = 5.84;
 
 const WalletMultiButtonDynamic = dynamic(
   async () =>
@@ -30,6 +33,8 @@ const Home = () => {
   );
 
   const wallet = useWallet();
+
+  const { data: walletBalance } = useBalance();
 
   // const { data: nftsList, isLoading: IsNftsLoading } = useNFTs(program);
 
@@ -135,7 +140,7 @@ const Home = () => {
                   {claimData && <p className={styles.live}>Minting LIVE</p>}
                   <p className={styles.solPriceWrapper}>
                     Price:
-                    <span>5.84</span>
+                    <span>{SOL_PRICE}</span>
                     <Image src={"/sol.png"} width={16} height={16} alt="sol" />
                   </p>
                 </div>
@@ -176,7 +181,7 @@ const Home = () => {
                   {isLoading ? (isSuccess ? "Claimed" : "Claiming") : "Claim"}
                 </button>
               </div>
-              <div>{isError && <p>Error happened during claiming.</p>}</div>
+              <div>{isError && <p>Error Claiming.</p>}</div>
             </>
           )}
         </div>
