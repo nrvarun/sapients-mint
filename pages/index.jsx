@@ -16,7 +16,7 @@ import styles from "../styles/Home.module.css";
 // Default styles that can be overridden by your app
 require("@solana/wallet-adapter-react-ui/styles.css");
 
-const SOL_PRICE = 5.84;
+const SOL_PRICE = 3;
 
 const WalletMultiButtonDynamic = dynamic(
   async () =>
